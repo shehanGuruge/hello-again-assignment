@@ -1,0 +1,61 @@
+export interface Bounty {
+  id: string;
+  name: string;
+  amount: number;
+  image: string;
+  description: string;
+  activation_description: string;
+  redeem_description: string;
+  bounty_activate_alert_text: string;
+  bounty_activate_alert_header: string;
+  bounty_redeem_alert_text: string;
+  bounty_redeem_alert_header: string;
+  redeem_success_alert_text: string;
+  needed_points: number;
+  needed_visits: number;
+  is_active: boolean;
+  is_activated: boolean | null;
+  is_activateable: boolean | null;
+  is_deactivatable: boolean | null;
+  consume_points: boolean;
+  limited: boolean;
+  contest: boolean;
+  highscore_contest: boolean;
+  point_contest: boolean;
+  ranks: number;
+  cr_rank: number;
+  cr_points: number | null;
+  availability: number;
+  pictures: string[]; // could be object[] if pictures have structure
+  show_progress_bar: boolean;
+  show_ranking: boolean;
+  show_confirmation_dialog: string;
+  promo_redeem_types: PromoRedeemType[];
+  is_redeemable: boolean | null;
+  instant: boolean;
+  single_use: boolean;
+  shipping: boolean;
+  can_participate: boolean | null;
+  is_participating: boolean | null;
+  valid_from: string | null;
+  valid_until: string | null;
+  app_form: any;
+  shop: any;
+  category: any;
+  condition_id: string | null;
+  is_expired: boolean;
+  point_pool: any;
+  redeem_count: number | null;
+  time_range_redeem_count: number | null;
+  required_status: string | null;
+  reward_type: number;
+  type: number;
+  manual_claim: boolean;
+  throttle: any;
+  terms: any;
+  variations: any;
+  order: number;
+}
+export interface PromoRedeemType {
+    type: string;
+}
