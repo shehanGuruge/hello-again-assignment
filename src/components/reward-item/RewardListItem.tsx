@@ -11,8 +11,8 @@ export const RewardListItem = memo(function RewardListItem({ title, description,
         <View style={[styles.buttonStyle, backgroundStyle]}>
             <RewardListItemImage imageUrl={imageUrl} />
             <View style={styles.detailContainerStyle}>
-                <Text style={styles.titleStyle}>{title}</Text>
-                <Text style={styles.descriptionStyle}>{description}</Text>
+                <Text style={styles.titleStyle} numberOfLines={2}>{title}</Text>
+                <Text style={styles.descriptionStyle} numberOfLines={2}>{description}</Text>
                 {
                     isCollectButtonHidden || !isAdded &&
                     <RewardListItemButton onPress={onPress} />
