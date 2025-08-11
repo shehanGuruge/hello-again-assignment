@@ -5,5 +5,5 @@ export const selectAllCollectedRewards = (state: RootState) => state.rewards.col
 
 export const selectAllCollectedRewardsIds = createSelector(
     selectAllCollectedRewards,
-    (rewards) => rewards.map(reward => reward.id)
+    (rewards) => new Set(rewards.map(reward => reward.id))
 );

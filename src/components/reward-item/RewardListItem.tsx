@@ -7,6 +7,7 @@ import { memo } from 'react';
 
 export const RewardListItem = memo(function RewardListItem({ title, description, isAdded, onPress, imageUrl, isCollectButtonHidden = false }: RewardListItemProps) {
     const backgroundStyle = isAdded ? styles.selectedBgColor : styles.defaultBgColor;
+    console.log("Rendered: "+ title);
     return (
         <View style={[styles.buttonStyle, backgroundStyle]}>
             <RewardListItemImage imageUrl={imageUrl} />
@@ -20,6 +21,14 @@ export const RewardListItem = memo(function RewardListItem({ title, description,
             </View>
         </View>
     )
+}, (prevProps, nextProps) => {
+    return (
+        prevProps.title === nextProps.title &&
+        prevProps.description === nextProps.description &&
+        prevProps.isAdded === nextProps.isAdded &&
+        prevProps.imageUrl === nextProps.imageUrl &&
+        prevProps.isCollectButtonHidden === nextProps.isCollectButtonHidden 
+    );
 })
 
 const styles = StyleSheet.create({

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { FlatList, ActivityIndicator, View, Button, StyleSheet } from 'react-native';
 import { useRewardsQuery } from '../hooks/useRewardsQuery';
 import { RewardListItem, showSnackBar, SnackBarType } from '../components';
@@ -21,25 +21,39 @@ export function AvailableRewardsScreen() {
         }
     }, [error])
 
-    const debouncedQueryRewards = debounce(() => {
-        if (!isLoading) {
-            queryRewards();
-        }
-    }, 100);
+    const debouncedQueryRewards = useMemo(() =>
+        debounce(() => {
+            if (!isLoading) {
+                queryRewards();
+            }
+        }, 100), 
+    [isLoading, queryRewards]);
 
     const handledOnEndReached = useCallback(() => {
         debouncedQueryRewards();
     }, [debouncedQueryRewards]);
 
-    function handleCollectPress(item: Bounty) {
-        dispatch(collectReward(item))
-    }
 
     function handleRetryPress() {
         if (!isLoading) {
             queryRewards()
         }
     }
+
+    const handleCollectPress = useCallback((item: Bounty) => {
+        dispatch(collectReward(item))
+    }, [dispatch])
+
+    const renderItem = useCallback(({ item }: { item: Bounty }) => {
+        return (
+            <RewardListItem
+                title={item.name}
+                description={item.activation_description}
+                onPress={() => handleCollectPress(item)}
+                imageUrl={item.image}
+                isAdded={collectedRewardIds.has(item.id)} />
+        )
+    }, [collectedRewardIds, handleCollectPress])
 
     return (
         <View style={styles.containerStyle}>
@@ -50,14 +64,7 @@ export function AvailableRewardsScreen() {
                 ListHeaderComponent={
                     error && !isLoading && rewards.length === 0 ? <Button onPress={handleRetryPress} title='Retry' /> : null
                 }
-                renderItem={({ item }) =>
-                    <RewardListItem
-                        title={item.name}
-                        description={item.activation_description}
-                        onPress={() => handleCollectPress(item)}
-                        imageUrl={item.image}
-                        isAdded={collectedRewardIds.includes(item.id)} />
-                }
+                renderItem={renderItem}
                 onEndReachedThreshold={0.2}
                 onEndReached={handledOnEndReached}
                 initialNumToRender={10}
